@@ -18,7 +18,7 @@ wacky.bmp 922KB----4KB | 4KB | 4KB | 3KB
 winnt256.bmp 157KB ----159 KB| 63KB | 63KB | 50KB
 
 
-filename|Original-Compression Ratio| N-Compression Ratio | R-Compression Ratio | Mac-Compression Ratio
+Filename|Original-Compression Ratio| N-Compression Ratio | R-Compression Ratio | Mac-Compression Ratio
 --------|---------------- |------------|------------|------------
 all.tar| 1.67 |1.67| 2.5| 3.2
 assig2.doc| 1.16 | 2.2 |2.2 | 3.8
