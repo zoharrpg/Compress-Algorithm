@@ -9,83 +9,88 @@
  *************************************************************************/
 
 public class LZWmod {
-    private static final int R = 256; // number of input chars
-    private static int L = 512; // number of codewords = 2^W
-    private static int W = 9; // codeword width
+    private static final int R = 256;       // number of input chars
+    private static int L = 512;            // number of codewords = 2^W
+    private static int W = 9;             // codeword width
     private static int bitcount = 0;
-    private static final int maxL =65536;
-    private static final int maxW=16;
+    private static final int maxL =65536;  //  max number of the codeword;
+    private static final int maxW=16;      // max codeword width
 
     public static void compress(String word) {
 
-        boolean type=false;
+        boolean type=false;          // type for whether it is reset or no reset, false for no reset
+                                    // true for reset 
 
         if(word.equals("r"))
         {
-            BinaryStdOut.write(true);
+            BinaryStdOut.write(true);     // write 1 bit for to mark the file as reset compress
             type=true;
 
         }
         else
         {
-            BinaryStdOut.write(false);
+            BinaryStdOut.write(false);    // write 1 bit for mark the file as no reset compress
 
         }
 
-        TSTmod<Integer> st = new TSTmod<Integer>();
+        TSTmod<Integer> st = new TSTmod<Integer>();     // set up the DLB version codebook, make method in TST as StringBuilder
         for (int i = 0; i < R; i++)
-            st.put(new StringBuilder("" + (char) i), i);
-        int code = R + 1; // R is codeword for EOF
+            st.put(new StringBuilder("" + (char) i), i); // set up the initial codebook
+        int code = R + 1;                               // R is codeword for EOF
 
-        StringBuilder current = new StringBuilder();
+        StringBuilder current = new StringBuilder();    // 
 
-        char c = BinaryStdIn.readChar();
+        char c = BinaryStdIn.readChar();          // read next Character
 
-        current.append(c);
+        current.append(c);                    
 
-        Integer codeword = st.get(current);
+        Integer codeword = st.get(current);       // get the codeword
 
-        boolean nolimit=true;
+        
 
-        while (!BinaryStdIn.isEmpty()) {
+        while (!BinaryStdIn.isEmpty()) {        
 
             codeword = st.get(current);
-            // TODO: read and append the next char to current
-            char next = BinaryStdIn.readChar();
+            
+            char next = BinaryStdIn.readChar();     // read and append the next char to current
 
             current.append(next);
 
-            if (!st.contains(current)) 
+            if (!st.contains(current))            // find the longest prefix 
             {
 
-                BinaryStdOut.write(codeword, W);
+                BinaryStdOut.write(codeword, W);     // output to compress
 
                 
                 
             
                 
-                if (W< maxW && code == L) 
+                if (W< maxW && code == L)  //check whether codeword width reach the max, also check whether symbol table full
                 {
-                    L *= 2;
-                    W++;
+                    L *= 2;                
+                    W++;                   // double size the number of codeword, and increment the codeword width, making it become varible length codeword
+
+                                         // if the width reach the max in the no rset type, the codeword will remain the same with double size and increment of the symbol table
                     
-                    bitcount++;
+                    //bitcount++;
                 }
                 
                 
 
                
-                // Add to symbol table if not full
-                if(code<maxL)
+                
+                if(code<maxL)                // check whether symbil reach the max of codeword
                 {
-                    st.put(current, code++);
+                    st.put(current, code++);     //Add to symbol table 
                 }
-                else 
+                else                        // if it reach the max
                 {
                     
                     
-                    if(type)
+                    if(type)              // if the compress type is reset 
                     {
+                    
+                
                     st.put(current, code++);
                     
                     L=512;
@@ -93,10 +98,11 @@ public class LZWmod {
                     st = new TSTmod<Integer>();
 
                     for (int i = 0; i < R; i++)
-                    st.put(new StringBuilder("" + (char) i), i);
+                    st.put(new StringBuilder("" + (char) i), i);        // reset the whole codebook
 
                     code = R + 1;
-                    }
+                    
+                }
 
                    
 
@@ -107,22 +113,24 @@ public class LZWmod {
 
                
 
-                // TODO: reset current
+              
                 char last = current.charAt(current.length() - 1);
-                current = new StringBuilder();
+                current = new StringBuilder();                           // reset current
                 current.append(last);
 
             }
 
-            // TODO: reset current
+           
 
         }
 
-        // TODO: Write the codeword of whatever remains
+        //  Write the codeword of whatever remains
 
         // in current
 
-        BinaryStdOut.write(st.get(current), W);
+        BinaryStdOut.write(st.get(current), W);                 //  Write the codeword of whatever remains
+
+                                                                // in current
 
         BinaryStdOut.write(R, W); // Write EOF
 
@@ -134,9 +142,9 @@ public class LZWmod {
 
     public static void expand(){
         
-        boolean type = BinaryStdIn.readBoolean();
+        boolean type = BinaryStdIn.readBoolean();                // check whether the compress is reset type
         
-        String[] st = new String[maxL];
+        String[] st = new String[maxL];                         // String array for codeword, make the size become the max
         int i; // next available codeword value
 
         // initialize symbol table with all 1-character strings
@@ -144,31 +152,31 @@ public class LZWmod {
             st[i] = "" + (char) i;
         st[i++] = ""; // (unused) lookahead for EOF
 
-        int codeword = BinaryStdIn.readInt(W);
+        int codeword = BinaryStdIn.readInt(W);              // read the codeword
         
-        String val = st[codeword];
-        boolean nolimit = true;
+        String val = st[codeword];                          //get the value of the codeword
+       
 
         while (true) {
 
             
             
-            BinaryStdOut.write(val);
+            BinaryStdOut.write(val);                  // output value to expand
             
      
         
 
-            if ( W < maxW &&i<maxL && i == L) 
+            if ( W < maxW &&i<maxL && i == L)         // when current W and L is all used 
             {
-                W++;
+                W++;                                    // expanding by using increment of the length of codeword width
                 L *= 2;
 
             }
             
             
-            if( type && W==maxW && i==maxL)
+            if( type && W==maxW && i==maxL)        // if the compress type is reset
             {
-                W=9;
+                W=9;                             // reset the codebook
                 L=512;
 
                 st = new String[maxL];
@@ -177,7 +185,7 @@ public class LZWmod {
                     
                 st[i++] = ""; // (unused) lookahead for EOF
 
-                    codeword = BinaryStdIn.readInt(W);
+                    codeword = BinaryStdIn.readInt(W);               // reset the condition
 
                     val = st[codeword];
 
@@ -192,7 +200,7 @@ public class LZWmod {
            codeword = BinaryStdIn.readInt(W);
             
             
-            if (codeword == R)
+            if (codeword == R)                      // expand finished
                 break;
             String s = st[codeword];
             if (i == codeword)
@@ -201,7 +209,7 @@ public class LZWmod {
             if (i < L)
             {
                 //System.err.println(i);
-              st[i++] = val + s.charAt(0);
+              st[i++] = val + s.charAt(0);                  
             
             }
             
@@ -215,7 +223,7 @@ public class LZWmod {
     public static void main(String[] args) {
         if (args[0].equals("-"))  
         {
-           if(!(args[1].equals("n")||args[1].equals("r")))
+           if(!(args[1].equals("n")||args[1].equals("r")))         // check whether command line is correct
            throw new RuntimeException("Illegal command line argument");
 
             compress(args[1]);
