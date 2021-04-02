@@ -2,7 +2,7 @@
 
 Original Compress| N-Compress | R-Compress | Mac-Compress
 ---------------- |------------|------------|------------
-all.tar 3MB---1.8MB |3MB---1.8MB| 3MB---1.2MB| 3MB----969KB
+all.tar 3MB---1.8MB |1.8MB| 1.2MB| 969KB
 assig2.doc 87KB---75KB | 40KB |40KB |23kB
 bmps.tar 1.1MB---925KB | 40KB | 81 KB | 64KB
 code.txt 72KB ---31KB| 25KB | 25KB | 15KB
