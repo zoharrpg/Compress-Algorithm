@@ -223,8 +223,8 @@ public class LZWmod {
         else if (args[0].equals("+")) expand();
         else throw new RuntimeException("Illegal command line argument");
 
-        System.err.println(bitcount);
-        System.err.println(W);
+       // System.err.println(bitcount);
+       // System.err.println(W);
 
        
     }
