@@ -1,5 +1,5 @@
 # Compression-Table
-Filename|Original Size|Original Compress| N-Compress | R-Compress | Mac-Compress
+Filename|Original Size|Original Compression| N-Compression | R-Compression | Mac-Compression
 ---------|--------|---------------- |------------|------------|------------
 all.tar | 3MB|1.8MB |1.8MB| 1.2MB| 969KB
 assig2.doc | 87KB|75KB | 40KB |40KB |23kB
